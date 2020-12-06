@@ -39,6 +39,30 @@
                 :ratingItem="ratingItem"
               />
             </div>
+
+            <div class="review-form__comment">
+              <textarea
+                class="review-form__comment-field"
+                name="comment"
+                placeholder="Комментарий"
+                :maxlength="maxLengthComment"
+                v-model="textComment"
+              >
+              </textarea>
+              <span class="review-form__comment-counter">{{counterSymbol}}/{{maxLengthComment}}</span>
+            </div>
+
+            <div class="review-form__upload-img">
+              <input
+                id="upload-img"
+                type="file"
+                name="uploadImg"
+                multiple
+                class="review-form__upload-img-input"
+              >
+              <label for="upload-img" class="review-form__upload-img-label">+</label>
+            </div>
+
             <div class="review-form__btn">
               <button type="submite" class="btn">Отправить</button>
             </div>
@@ -65,10 +89,16 @@
           { title: 'Скорость отдачи видео', name: 'video-speed' },
           { title: 'Качество', name: 'quality' },
           { title: 'Пунктуальность', name: 'punctuality' }
-        ]
+        ],
+        maxLengthComment: 500,
+        textComment: ''
       }
     },
-    computed: {},
+    computed: {
+      counterSymbol() {
+        return this.textComment.length
+      }
+    },
     methods: {
       closePopup() {
         this.isPopup = false
@@ -134,10 +164,60 @@
   }
 
   .review-form {
-
     &__rating {
       display: flex;
       flex-wrap: wrap;
+      padding: 0 32px;
+      margin-bottom: 28px;
+    }
+    &__comment {
+      height: 100px;
+      padding: 0 32px;
+      margin-bottom: 36px;
+      position: relative;
+    }
+    &__comment-field {
+      display: block;
+      width: 100%;
+      height: 100px;
+      margin-bottom: 36px;
+      padding: 12px;
+      outline: none;
+      resize: none;
+      border: 1px solid #EAECF0;
+      border-radius: 6px;
+      background: #FAFAFA;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      color: #7f899e;
+      opacity: .9;
+    }
+    &__comment-counter {
+      position: absolute;
+      bottom: -20px;
+      right: 32px;
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 400;
+      color: #7f899e;
+      opacity: .9;
+    }
+    &__upload-img {
+      position: relative;
+      margin-bottom: 24px;
+      padding: 0 32px;
+    }
+    &__upload-img-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      opacity: 0;
+    }
+    &__upload-img-label {
+      cursor: pointer;
     }
     &__btn {
       border-top: 1px solid #EAECF0;

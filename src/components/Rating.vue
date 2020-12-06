@@ -41,8 +41,9 @@
 
 <style lang="scss">
   .rating {
-    padding: 0 32px;
-    margin-bottom: 34px;
+
+    &:nth-of-type(odd) { margin-right: 52px; }
+    &:nth-of-type(1) { margin-bottom: 20px; }
 
     &__name {
       margin-bottom: 8px;
