@@ -1,0 +1,47 @@
+@import 'variables.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: #3C3C3C;
+  background: #e7e7e7;
+  margin: 0;
+  padding: 0;
+  margin-left: 20px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+p, input {
+  margin: 0;
+}
+
+input:focus {
+  outline: none;
+}
+
+.btn {
+  border: none;
+  outline: none;
+  background: #53C6D1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: #fff;
+  cursor: pointer;
+  transition: .2s;
+
+  &:hover {
+    opacity: .9;
+  }
+}
