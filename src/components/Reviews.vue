@@ -31,7 +31,7 @@
             </div>
           </div>
 
-          <form class="review-form">
+          <form class="review-form" enctype="multipart/form-data">
             <div class="review-form__rating">
               <Rating
                 v-for="ratingItem in ratingItems"
@@ -49,22 +49,39 @@
                 v-model="textComment"
               >
               </textarea>
-              <span class="review-form__comment-counter">{{counterSymbol}}/{{maxLengthComment}}</span>
+              <span class="review-form__comment-counter">{{textComment.length}}/{{maxLengthComment}}</span>
             </div>
 
             <div class="review-form__upload-img">
               <input
+                class="review-form__upload-img-input"
                 id="upload-img"
                 type="file"
                 name="uploadImg"
+                accept="image/*"
                 multiple
-                class="review-form__upload-img-input"
               >
-              <label for="upload-img" class="review-form__upload-img-label">+</label>
+              <label for="upload-img" class="review-form__upload-img-label" title="Upload file"></label>
+              <div class="review-form__upload-img-preview">
+                <img src="/images/foto_1.jpg" alt="foto" />
+                <span class="review-form__delete-img"></span>
+              </div>
+              <div class="review-form__upload-img-preview">
+                <img src="/images/foto_2.jpg" alt="foto" />
+                <span class="review-form__delete-img"></span>
+              </div>
+              <div class="review-form__upload-img-preview">
+                <img src="/images/foto_3.jpg" alt="foto" />
+                <span class="review-form__delete-img"></span>
+              </div>
+              <div class="review-form__upload-img-preview">
+                <img src="/images/foto_4.jpg" alt="foto" />
+                <span class="review-form__delete-img"></span>
+              </div>
             </div>
 
             <div class="review-form__btn">
-              <button type="submite" class="btn">Отправить</button>
+              <button @click.prevent="submiteForm" class="btn">Отправить</button>
             </div>
           </form>
 
@@ -77,6 +94,7 @@
 
 <script>
   import Rating from '@/components/Rating'
+  // import axios from 'axios'
 
   export default {
     name: 'reviews',
@@ -94,14 +112,32 @@
         textComment: ''
       }
     },
-    computed: {
-      counterSymbol() {
-        return this.textComment.length
-      }
-    },
+    computed: { },
     methods: {
       closePopup() {
         this.isPopup = false
+      },
+      submiteForm() {
+        // const data = this.$refs.form
+        // const formData = new FormData(data)
+
+        // for(let i = 0; i < this.files.length; i++) {
+        //   let file = this.files[i]
+        //   formData.append('files[' + i + ']', file)
+        // }
+
+        // const json = JSON.stringify(Object.fromEntries(formData.entries()))
+        // console.log(json)
+
+        // axios.post('http://localhost:3000/data', json, {
+        //   headers: { 'Content-Type': 'multipart/form-data' }
+        // })
+        // .then(() => {
+        //   this.closePopup()
+        // })
+        // .catch(error => {
+        //   console.log(error)
+        // })
       }
     }
   }
@@ -206,8 +242,10 @@
     }
     &__upload-img {
       position: relative;
-      margin-bottom: 24px;
+      margin-bottom: 12px;
       padding: 0 32px;
+      display: flex;
+      flex-wrap: wrap;
     }
     &__upload-img-input {
       position: absolute;
@@ -217,7 +255,57 @@
       opacity: 0;
     }
     &__upload-img-label {
+      margin-right: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 80px;
+      height: 80px;
+      background: #F3F4F6;
+      border: 1px solid #EAECF0;
+      border-radius: 6px;
       cursor: pointer;
+
+      &:before {
+        content: url(/images/icons/plus.svg);
+        width: 14px;
+        height: 14px;
+      }
+    }
+    &__upload-img-preview {
+      margin-right: 8px;
+      margin-bottom: 12px;
+      width: 80px;
+      height: 80px;
+      border-radius: 6px;
+      position: relative;
+
+      /* &:hover + &__delete-img {
+        opacity: 1;
+      } */
+    }
+    &__delete-img {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 32px;
+      height: 32px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 4px;
+      opacity: 0;
+      cursor: pointer;
+      transition: .2s;
+
+      &:before {
+        content: url(/images/icons/delete.svg);
+      }
+    }
+    &__upload-img-preview:hover &__delete-img {
+      opacity: 1;
     }
     &__btn {
       border-top: 1px solid #EAECF0;
