@@ -2,19 +2,19 @@
   <div class="rating">
     <p class="rating__name">{{ ratingItem.title }}</p>
     <div class="rating__group">
-      <input class="rating__input" type="radio" :name="ratingItem.name" :id="`${ratingItem.name}-1`" value="1">
+      <input class="rating__input" type="radio" :name="ratingItem.name" :id="`${ratingItem.name}-1`" value="1" @change="sendRating">
       <label class="rating__star" :for="`${ratingItem.name}-1`"></label>
 
-      <input class="rating__input" type="radio" :name="ratingItem.name" :id="`${ratingItem.name}-2`" value="2">
+      <input class="rating__input" type="radio" :name="ratingItem.name" :id="`${ratingItem.name}-2`" value="2" @change="sendRating">
       <label class="rating__star" :for="`${ratingItem.name}-2`"></label>
 
-      <input class="rating__input" type="radio" :name="ratingItem.name" :id="`${ratingItem.name}-3`" value="3">
+      <input class="rating__input" type="radio" :name="ratingItem.name" :id="`${ratingItem.name}-3`" value="3" @change="sendRating">
       <label class="rating__star" :for="`${ratingItem.name}-3`"></label>
 
-      <input class="rating__input" type="radio" :name="ratingItem.name" :id="`${ratingItem.name}-4`" value="4">
+      <input class="rating__input" type="radio" :name="ratingItem.name" :id="`${ratingItem.name}-4`" value="4" @change="sendRating">
       <label class="rating__star" :for="`${ratingItem.name}-4`"></label>
 
-      <input class="rating__input" type="radio" :name="ratingItem.name" :id="`${ratingItem.name}-5`" value="5">
+      <input class="rating__input" type="radio" :name="ratingItem.name" :id="`${ratingItem.name}-5`" value="5" @change="sendRating">
       <label class="rating__star" :for="`${ratingItem.name}-5`"></label>
     </div>
   </div>
@@ -31,11 +31,11 @@
         }
       }
     },
-    data() {
-      return {}
-    },
-    computed: {},
-    methods: {}
+    methods: {
+      sendRating() {
+        this.$emit('sendRating', this.ratingItem.name)
+      }
+    }
   }
 </script>
 

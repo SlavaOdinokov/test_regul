@@ -31,12 +31,16 @@
             </div>
           </div>
 
-          <form class="review-form" enctype="multipart/form-data">
+          <form
+            class="review-form"
+            enctype="multipart/form-data"
+          >
             <div class="review-form__rating">
               <Rating
                 v-for="ratingItem in ratingItems"
                 :key="ratingItem.name"
                 :ratingItem="ratingItem"
+                @sendRating="getRating"
               />
             </div>
 
@@ -60,6 +64,7 @@
                 name="uploadImg"
                 accept="image/*"
                 multiple
+                ref="files"
               >
               <label for="upload-img" class="review-form__upload-img-label" title="Upload file"></label>
               <div class="review-form__upload-img-preview">
@@ -89,16 +94,19 @@
       </div>
     </transition>
 
+    <Notifications
+      :messages="messages"
+    />
   </div>
 </template>
 
 <script>
   import Rating from '@/components/Rating'
-  // import axios from 'axios'
+  import Notifications from '@/components/Notifications'
 
   export default {
     name: 'reviews',
-    components: { Rating },
+    components: { Rating, Notifications },
     data() {
       return {
         isPopup: false,
@@ -109,35 +117,57 @@
           { title: 'Пунктуальность', name: 'punctuality' }
         ],
         maxLengthComment: 500,
-        textComment: ''
+        textComment: '',
+        rating: [],
+        messages: []
       }
     },
-    computed: { },
     methods: {
       closePopup() {
         this.isPopup = false
       },
+      getRating(data) {
+        if (this.rating.length > 0) {
+          if (!this.rating.find(item => item === data)) {
+            this.rating.push(data)
+          }
+        } else {
+          this.rating.push(data)
+        }
+      },
       submiteForm() {
-        // const data = this.$refs.form
-        // const formData = new FormData(data)
+        if (this.checkForm()) {
+          const timeStamp = Date.now().toLocaleString()
 
-        // for(let i = 0; i < this.files.length; i++) {
-        //   let file = this.files[i]
-        //   formData.append('files[' + i + ']', file)
-        // }
+          this.messages.unshift(
+            { name: 'Спасибо, отзыв опубликован!', type: 'success', id: timeStamp }
+          )
+          this.closePopup()
+          this.textComment = ''
+        }
+      },
+      checkForm() {
+        const timeStamp = Date.now().toLocaleString()
 
-        // const json = JSON.stringify(Object.fromEntries(formData.entries()))
-        // console.log(json)
-
-        // axios.post('http://localhost:3000/data', json, {
-        //   headers: { 'Content-Type': 'multipart/form-data' }
-        // })
-        // .then(() => {
-        //   this.closePopup()
-        // })
-        // .catch(error => {
-        //   console.log(error)
-        // })
+        if (this.rating.length !== 4) {
+          this.messages.unshift(
+            { name: 'Поставьте рейтинг', type: 'error', id: timeStamp }
+          )
+          return false
+        }
+        if (!this.textComment) {
+          this.messages.unshift(
+            { name: 'Заполните поле комментарий', type: 'error', id: timeStamp }
+          )
+          return false
+        }
+        if (this.$refs.files.files.length === 0) {
+          this.messages.unshift(
+            { name: 'Загрузите фото', type: 'error', id: timeStamp }
+          )
+          return false
+        }
+        return true
       }
     }
   }
