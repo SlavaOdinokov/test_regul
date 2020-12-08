@@ -41,9 +41,10 @@
 
 <style lang="scss">
   .rating {
+    width: 220px;
+    margin-bottom: 16px;
 
-    &:nth-of-type(odd) { margin-right: 52px; }
-    &:nth-of-type(1) { margin-bottom: 20px; }
+    &:last-child { margin-bottom: 0; }
 
     &__name {
       margin-bottom: 8px;
@@ -89,6 +90,12 @@
     }
     &__star:hover ~ &__star {
       background-image: url(/images/icons/star_empty.svg);
+    }
+
+    @media (min-width: 576px) {
+      margin-bottom: 0;
+
+      &:nth-of-type(1) { margin-bottom: 20px; }
     }
   }
 </style>

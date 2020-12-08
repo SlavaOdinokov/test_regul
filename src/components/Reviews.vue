@@ -14,7 +14,8 @@
       >
         <div class="popup">
           <div class="popup__header">
-            <div class="popup__title">Мой отзыв</div>
+            <div v-if="isMobile" class="popup__title">Новый отзыв</div>
+            <div v-else class="popup__title">Мой отзыв</div>
             <div
               class="popup__close"
               @click="closePopup"
@@ -35,9 +36,18 @@
             class="review-form"
             enctype="multipart/form-data"
           >
-            <div class="review-form__rating">
+            <div v-if="isMobile" class="review-form__rating">
               <Rating
-                v-for="ratingItem in ratingItems"
+                v-for="ratingItem in ratingItemsMobile"
+                :key="ratingItem.name"
+                :ratingItem="ratingItem"
+                @sendRating="getRating"
+              />
+            </div>
+
+            <div v-else class="review-form__rating">
+              <Rating
+                v-for="ratingItem in ratingItemsDesktop"
                 :key="ratingItem.name"
                 :ratingItem="ratingItem"
                 @sendRating="getRating"
@@ -83,6 +93,10 @@
                 <img src="/images/foto_4.jpg" alt="foto" />
                 <span class="review-form__delete-img"></span>
               </div>
+              <div v-if="isMobile" class="review-form__upload-img-preview">
+                <img src="/images/foto_5.jpg" alt="foto" />
+                <span class="review-form__delete-img"></span>
+              </div>
             </div>
 
             <div class="review-form__btn">
@@ -106,15 +120,26 @@
 
   export default {
     name: 'reviews',
+    props: {
+      isMobile: {
+        type: Boolean
+      }
+    },
     components: { Rating, Notifications },
     data() {
       return {
         isPopup: false,
-        ratingItems: [
+        ratingItemsDesktop: [
           { title: 'Скорость', name: 'speed' },
           { title: 'Скорость отдачи видео', name: 'video-speed' },
           { title: 'Качество', name: 'quality' },
           { title: 'Пунктуальность', name: 'punctuality' }
+        ],
+        ratingItemsMobile: [
+          { title: 'Скорость', name: 'speed' },
+          { title: 'Скорость отдачи видео', name: 'video-speed' },
+          { title: 'Исполнитель солнышка?', name: 'sun' },
+          { title: 'Исполнитель солнышка?2', name: 'sun2' }
         ],
         maxLengthComment: 500,
         textComment: '',
@@ -157,7 +182,7 @@
         }
         if (!this.textComment) {
           this.messages.unshift(
-            { name: 'Заполните поле комментарий', type: 'error', id: timeStamp }
+            { name: 'Напишите комментарий', type: 'error', id: timeStamp }
           )
           return false
         }
@@ -188,17 +213,29 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 560px;
+    width: 100%;
+    height: 100%;
     /* height: 655px; */
-    border-radius: 16px;
     background: #fff;
+    border-radius: 16px 16px 0 0;
+    overflow: auto;
 
     &__header {
-      margin-bottom: 24px;
       display: flex;
       justify-content: space-between;
-      padding: 16px 21px 16px 32px;
-      border-bottom: 1px solid #EAECF0;
+      padding: 16px 21px 16px 16px;
+
+      &:before {
+        content: "";
+        height: 3px;
+        width: 24px;
+        background: #CFD3DD;
+        border-radius: 4px;
+        position: absolute;
+        top: 4px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
     }
     &__title {
       font-size: 16px;
@@ -210,22 +247,54 @@
       align-items: center;
       cursor: pointer;
     }
+
+    @media (min-width: 576px) {
+      width: 560px;
+      height: auto;
+      border-radius: 16px;
+
+      &__header {
+        padding: 16px 21px 16px 32px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid #EAECF0;
+      }
+    }
   }
 
   .card-user {
     display: flex;
-    margin-bottom: 32px;
-    padding: 0 32px;
+    flex-direction: column;
+    margin-bottom: 24px;
+    padding: 0 16px;
 
     &__img {
+      width: 102px;
+      height: 68px;
       border-radius: 6px;
-      margin-right: 20px;
+      margin-bottom: 13px;
     }
     &__name {
+      margin-top: 4px;
       font-size: 12px;
       font-weight: 400;
       line-height: 16px;
       color: #50586A;
+    }
+
+    @media (min-width: 576px) {
+      flex-direction: row;
+      padding: 0 32px;
+      margin-bottom: 32px;
+
+      &__img {
+        width: 84px;
+        height: 56px;
+        margin-right: 20px;
+        margin-bottom: 0;
+      }
+      &__name {
+        margin-top: 0;
+      }
     }
   }
 
@@ -233,21 +302,21 @@
     &__rating {
       display: flex;
       flex-wrap: wrap;
-      padding: 0 32px;
-      margin-bottom: 28px;
+      padding: 0 16px;
+      margin-bottom: 24px;
     }
     &__comment {
-      height: 100px;
-      padding: 0 32px;
+      height: 146px;
+      padding: 0 16px;
       margin-bottom: 36px;
       position: relative;
     }
     &__comment-field {
       display: block;
       width: 100%;
-      height: 100px;
+      height: 100%;
       margin-bottom: 36px;
-      padding: 12px;
+      padding: 16px 12px;
       outline: none;
       resize: none;
       border: 1px solid #EAECF0;
@@ -263,7 +332,7 @@
     &__comment-counter {
       position: absolute;
       bottom: -20px;
-      right: 32px;
+      right: 16px;
       font-size: 12px;
       line-height: 16px;
       font-weight: 400;
@@ -272,8 +341,8 @@
     }
     &__upload-img {
       position: relative;
-      margin-bottom: 12px;
-      padding: 0 32px;
+      margin-bottom: 136px;
+      padding: 0 16px;
       display: flex;
       flex-wrap: wrap;
     }
@@ -310,10 +379,6 @@
       height: 80px;
       border-radius: 6px;
       position: relative;
-
-      /* &:hover + &__delete-img {
-        opacity: 1;
-      } */
     }
     &__delete-img {
       position: absolute;
@@ -341,6 +406,27 @@
       border-top: 1px solid #EAECF0;
       padding: 16px;
       text-align: right;
+    }
+
+    @media (min-width: 576px) {
+      &__rating {
+        padding: 0 32px;
+        margin-bottom: 28px;
+      }
+      &__comment {
+        padding: 0 32px;
+        height: 100px;
+      }
+      &__comment-field {
+        padding: 12px;
+      }
+      &__comment-counter {
+        right: 32px;
+      }
+      &__upload-img {
+        padding: 0 32px;
+        margin-bottom: 12px;
+      }
     }
   }
 

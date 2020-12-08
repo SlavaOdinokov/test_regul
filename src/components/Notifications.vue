@@ -50,17 +50,20 @@
 
 <style lang="scss">
   .notifications {
+    width: 280px;
     position: fixed;
-    top: 30px;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
 
     &__content {
+      width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0px 12px;
+
       height: 36px;
       border-radius: 6px;
       font-weight: 500;
@@ -73,7 +76,7 @@
       &.error { background: #a82929; }
     }
     &__message {
-      margin-right: 14px;
+      margin-right: 12px;
     }
     &__close {
       width: 24px;
@@ -88,6 +91,10 @@
       &-enter-active, &-leave-active { transition: all .5s; }
       &__enter-to, &-leave { opacity: 1; }
       &-move { transition: all .5s; }
+    }
+
+    @media (min-width: 576px) {
+      top: 30px;
     }
   }
 </style>
