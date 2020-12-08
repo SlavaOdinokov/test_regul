@@ -139,7 +139,7 @@
           { title: 'Скорость', name: 'speed' },
           { title: 'Скорость отдачи видео', name: 'video-speed' },
           { title: 'Исполнитель солнышка?', name: 'sun' },
-          { title: 'Исполнитель солнышка?2', name: 'sun2' }
+          { title: 'Исполнитель солнышка?', name: 'sun2' }
         ],
         maxLengthComment: 500,
         textComment: '',
@@ -255,8 +255,12 @@
 
       &__header {
         padding: 16px 21px 16px 32px;
-        margin-bottom: 24px;
+        margin-bottom: 22px;
         border-bottom: 1px solid #EAECF0;
+
+        &:before {
+          display: none;
+        }
       }
     }
   }
@@ -268,8 +272,8 @@
     padding: 0 16px;
 
     &__img {
-      width: 102px;
-      height: 68px;
+      width: 84px;
+      height: 56px;
       border-radius: 6px;
       margin-bottom: 13px;
     }
@@ -283,12 +287,13 @@
 
     @media (min-width: 576px) {
       flex-direction: row;
+      align-items: center;
       padding: 0 32px;
       margin-bottom: 32px;
 
       &__img {
-        width: 84px;
-        height: 56px;
+        width: 102px;
+        height: 68px;
         margin-right: 20px;
         margin-bottom: 0;
       }
@@ -341,7 +346,7 @@
     }
     &__upload-img {
       position: relative;
-      margin-bottom: 136px;
+      margin-bottom: 128px;
       padding: 0 16px;
       display: flex;
       flex-wrap: wrap;
@@ -355,7 +360,7 @@
     }
     &__upload-img-label {
       margin-right: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -374,7 +379,7 @@
     }
     &__upload-img-preview {
       margin-right: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       width: 80px;
       height: 80px;
       border-radius: 6px;
@@ -425,6 +430,12 @@
       }
       &__upload-img {
         padding: 0 32px;
+        margin-bottom: 12px;
+      }
+      &__upload-img-label {
+        margin-bottom: 12px;
+      }
+      &__upload-img-preview {
         margin-bottom: 12px;
       }
     }
